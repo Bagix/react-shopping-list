@@ -1,26 +1,37 @@
-import React from 'react';
+import React, { Component } from 'react';
+import ShopItem from './Components/ShopItem/ShopItem';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
+class App extends Component {
+  state = {
+    shopList: [
+      {name: "Apple", price: 2.5},
+      {name: "Orange", price: 30},
+      {name: "Banana", price: 18.45},
+      {name: "Grape", price: 59.85},
+      {name: "Lemon", price: 9.75}
+    ]
+  }
+
+  render() {
+    let shopList = 
+      <ul>
+        {this.state.shopList.map(item => {
+          return (
+            <ShopItem item={item}/>
+          )
+        })}
+      </ul>
+
+
+    return(
+      <div className="App">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        {shopList}
     </div>
-  );
+    )
+  }
 }
 
 export default App;
