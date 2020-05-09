@@ -1,3 +1,13 @@
+:root {
+  --dark: #272727;
+  --gray: #747474;
+  --orange: #FF652F;
+  --yellow: #FFE400;
+  --green: #14A76C;
+}
+
+* {box-sizing: border-box;}
+
 .App {
   text-align: center;
 }
@@ -7,25 +17,49 @@
   pointer-events: none;
 }
 
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  padding: 1rem;
+  background-color: var(--gray);
+  border-radius: 3px;
+  color: #fff;
+}
+
+.shop-list {
+  list-style: none;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.shop-list__item {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 3px;
+  margin: .5rem;
+  padding: 1rem;
+  background-color: var(--yellow);
+  color: var(--dark);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.shop-list__item.expensive {
+  background-color: var(--orange);
+  color: #FFF;
+  cursor: not-allowed;
+}
+
+.shop-list__item.added {
+  background-color: var(--green);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
 }
 
 @keyframes App-logo-spin {
