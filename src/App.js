@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import AddItem from './Components/AddItem/AddItem';
 import logo from './logo.svg';
 import './App.css';
 
@@ -25,10 +26,12 @@ class App extends Component {
       const newShopList = {...this.state.shopList};
       const newWallet = this.state.wallet - item.price;
       const newSum = this.state.sum + item.price;
+      this.updatedWalletDown(newWallet);
+      this.updatedSumUp(newSum);
       newShopList[itemIdex].added = true;
       this.setState({
-        wallet: newWallet,
-        sum: newSum,
+        // wallet: newWallet,
+        // sum: newSum,
         itemExpensive: false
       });
     } else {
@@ -36,13 +39,89 @@ class App extends Component {
       const newShopList = {...this.state.shopList};
       const newWallet = this.state.wallet + item.price;
       const newSum = this.state.sum - item.price;
+      this.updatedWalletUp(newWallet);
+      this.updatedSumDown(newSum);
       newShopList[itemIdex].added = false;
       this.setState({
-        wallet: newWallet,
-        sum: newSum,
+        // wallet: newWallet,
+        // sum: newSum,
         itemExpensive: false
       });
     }
+  }
+
+  updatedSumUp = (targetSum) => {
+    const target = Math.round(targetSum * 100) / 100;
+    const speed = 100;
+    const increase = target / speed;
+    const newSum = Math.round((this.state.sum + increase) * 100) /100;
+
+    if(this.state.sum < target) {
+      this.setState({sum: newSum});
+      setTimeout(() => {
+        this.updatedSumUp(target)
+      },1)
+    } else {
+      this.setState({sum: target});
+    }
+  }
+
+  updatedWalletUp = (targetWallet) => {
+    const target = Math.round(targetWallet * 100) / 100;
+    const speed = 100;
+    const increase = target / speed;
+    const newWallet = Math.round((this.state.wallet + increase) * 100) /100;
+
+    if(this.state.wallet < target) {
+      this.setState({wallet: newWallet});
+      setTimeout(() => {
+        this.updatedWalletUp(target)
+      },1)
+    } else {
+      this.setState({wallet: target});
+    }
+  }
+
+  updatedSumDown = (targetSum) => {
+    const target = Math.round(targetSum * 100) / 100;
+    const speed = 50;
+    let decrease = 0.35;
+    if(target > 0 ) {
+      decrease = target / speed;
+    }
+    const newSum = Math.round((this.state.sum - decrease) * 100) /100;
+
+    if(this.state.sum > target) {
+      this.setState({sum: newSum});
+      setTimeout(() => {
+        this.updatedSumDown(target)
+      },1)
+    } else {
+      this.setState({sum: target});
+    }
+  }
+
+  updatedWalletDown = (targetWallet) => {
+    const target = Math.round(targetWallet * 100) / 100;
+    const speed = 50;
+    let decrease = 0.35;
+    if(target > 0 ) {
+      decrease = target / speed;
+    }
+    const newWallet = Math.round((this.state.wallet - decrease) * 100) /100;
+
+    if(this.state.wallet > target) {
+      this.setState({wallet: newWallet});
+      setTimeout(() => {
+        this.updatedWalletDown(target)
+      },1)
+    } else {
+      this.setState({wallet: target});
+    }
+  }
+
+  saveNewItemHandler = () => {
+    // Add new item to shop list
   }
 
   render() {
@@ -68,7 +147,7 @@ class App extends Component {
       </ul>
 
       if(this.state.itemExpensive) {
-        tooExpensive = <p>You don't have enough money for: {this.state.itemExpensive}</p>
+        tooExpensive = <p className="error">You don't have enough money for: <span>{this.state.itemExpensive}</span></p>
       }
 
 
@@ -76,6 +155,8 @@ class App extends Component {
       <div className="App">
         <img src={logo} className="App-logo" alt="logo" />
         <div className="container">
+          <AddItem
+          click={this.saveNewItemHandler}/>
           ${this.state.wallet}
           {shopList}
           ${this.state.sum}

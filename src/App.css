@@ -21,7 +21,7 @@
   width: 100%;
   max-width: 600px;
   margin: auto;
-  padding: 1rem;
+  padding: 1.5rem;
   background-color: var(--gray);
   border-radius: 3px;
   color: #fff;
@@ -38,7 +38,7 @@
   display: flex;
   justify-content: space-between;
   border-radius: 3px;
-  margin: .5rem;
+  margin: .66rem 0;
   padding: 1rem;
   background-color: var(--yellow);
   color: var(--dark);
@@ -54,6 +54,22 @@
 
 .shop-list__item.added {
   background-color: var(--green);
+}
+
+.error {
+  background-color: var(--orange);
+  color: #fff;
+  padding: .33rem;
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+.error span {
+  display: inline-block;
+  padding: .33rem;
+  border-radius: 3px;
+  background-color: #fff;
+  color: var(--orange);
 }
 
 @media (prefers-reduced-motion: no-preference) {
