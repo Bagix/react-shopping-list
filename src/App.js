@@ -12,10 +12,15 @@ class App extends Component {
       {name: "Grape", price: 59.85},
       {name: "Lemon", price: 9.75}
     ],
+    newItem: {
+      name: '',
+      price: '',
+    },
     basket: 0,
     wallet: 60,
     itemExpensive: false,
-    sum: 0
+    sum: 0,
+    itemExists: null
   }
 
   addItemHandler = (item) => {
@@ -23,28 +28,24 @@ class App extends Component {
       this.setState({itemExpensive: item.name})
     } else if(!item.added) {
       const itemIdex = this.state.shopList.indexOf(item);
-      const newShopList = {...this.state.shopList};
+      const newShopList = [...this.state.shopList];
       const newWallet = this.state.wallet - item.price;
       const newSum = this.state.sum + item.price;
       this.updatedWalletDown(newWallet);
       this.updatedSumUp(newSum);
       newShopList[itemIdex].added = true;
       this.setState({
-        // wallet: newWallet,
-        // sum: newSum,
         itemExpensive: false
       });
     } else {
       const itemIdex = this.state.shopList.indexOf(item);
-      const newShopList = {...this.state.shopList};
+      const newShopList = [...this.state.shopList];
       const newWallet = this.state.wallet + item.price;
       const newSum = this.state.sum - item.price;
       this.updatedWalletUp(newWallet);
       this.updatedSumDown(newSum);
       newShopList[itemIdex].added = false;
       this.setState({
-        // wallet: newWallet,
-        // sum: newSum,
         itemExpensive: false
       });
     }
@@ -113,15 +114,48 @@ class App extends Component {
     if(this.state.wallet > target) {
       this.setState({wallet: newWallet});
       setTimeout(() => {
-        this.updatedWalletDown(target)
+        this.updatedWalletDown(target);
       },1)
     } else {
       this.setState({wallet: target});
     }
   }
 
+  prepareNameHandler = (event) => {
+    const newItem = {...this.state.newItem};
+    let name = event.target.value
+    newItem.name = name.charAt(0).toUpperCase() + name.slice(1);
+    this.setState({newItem: newItem});
+  }
+
+  preparePriceHandler = (event) => {
+    const newItem = {...this.state.newItem};
+    newItem.price = Number(event.target.value);
+    this.setState({newItem: newItem});
+  }
+
   saveNewItemHandler = () => {
-    // Add new item to shop list
+    const name = this.state.newItem.name;
+    const price = this.state.newItem.price;
+    const newShopList = [...this.state.shopList];
+    const newItem = {
+      name: name,
+      price: price
+    }
+    const itemExists = this.state.shopList.find(el => el.name === newItem.name)
+    console.log(itemExists)
+    if(!itemExists) {
+      newShopList.push(newItem);
+      this.setState({
+        shopList: newShopList,
+        newItem: {
+          name: '',
+          price: ''
+        }
+      });
+    } else {
+      this.setState({itemExists: itemExists})
+    }
   }
 
   render() {
@@ -156,7 +190,13 @@ class App extends Component {
         <img src={logo} className="App-logo" alt="logo" />
         <div className="container">
           <AddItem
-          click={this.saveNewItemHandler}/>
+            name={this.state.newItem.name}
+            price={this.state.newItem.price}
+            click={this.saveNewItemHandler}
+            prepareName={(event) => this.prepareNameHandler(event)}
+            preparePrice={(event) => this.preparePriceHandler(event)}/>
+        </div>
+        <div className="container">
           ${this.state.wallet}
           {shopList}
           ${this.state.sum}
