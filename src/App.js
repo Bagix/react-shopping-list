@@ -24,7 +24,7 @@ class App extends Component {
   }
 
   addItemHandler = (item) => {
-    if(item.price >  this.state.wallet) {
+    if(item.price > this.state.wallet && item.added !== true) {
       this.setState({itemExpensive: item.name})
     } else if(!item.added) {
       const itemIdex = this.state.shopList.indexOf(item);
@@ -158,6 +158,13 @@ class App extends Component {
     }
   }
 
+  removeItemHandler = (item) => {
+    const newShopList = [...this.state.shopList];
+    const itemIndex = newShopList.indexOf(item);
+    newShopList.splice(itemIndex, 1);
+    this.setState({shopList: newShopList});
+  }
+
   render() {
     let tooExpensive = null;
 
@@ -166,15 +173,18 @@ class App extends Component {
         {this.state.shopList.map(item => {
           const price = "$" + item.price.toFixed(2);
           let expensive = false;
-          if(item.price > this.state.wallet) {
+          if(item.price > this.state.wallet && item.addded === undefined) {
+            console.log(item.added)
             expensive = true;
           }
           return (
-            <li className={`shop-list__item ${expensive ? "expensive" : ""} ${item.added ? "added": ""}`}
-            key={item.name}
-            onClick={() => this.addItemHandler(item)}>
-              <span>{item.name}</span>
-              <span>{price}</span>
+            <li className={`shop-list__item ${item.added ? "added": expensive ? "expensive" : ""}`}
+            key={item.name}>
+              <div onClick={() => this.addItemHandler(item)}>
+                <span>{item.name}</span>
+                <span>{price}</span>
+              </div>
+              <span className="remove" onClick={() => this.removeItemHandler(item)}>X</span>
             </li>
           )
         })}

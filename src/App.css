@@ -21,7 +21,7 @@
   width: 100%;
   max-width: 600px;
   margin: 1rem auto;
-  padding: 1.5rem;
+  padding: 2rem;
   background-color: var(--gray);
   border-radius: 3px;
   color: #fff;
@@ -35,6 +35,10 @@
 }
 
 .shop-list__item {
+  position: relative;
+}
+
+.shop-list__item div {
   display: flex;
   justify-content: space-between;
   border-radius: 3px;
@@ -46,14 +50,34 @@
   cursor: pointer;
 }
 
-.shop-list__item.expensive {
+.shop-list__item .remove {
+  position: absolute;
+  display: inline-block;
+  width: 0;
+  left: 100%;
+  top: 16px;
+  overflow: hidden;
+  background-color: var(--dark);
+  color: #fff;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  cursor: pointer;
+  transition: width linear .2s;
+}
+
+.shop-list__item:not(.added):hover .remove {
+  width: 30px;
+}
+
+.shop-list__item.expensive div {
   background-color: var(--orange);
   color: #FFF;
   cursor: not-allowed;
 }
 
-.shop-list__item.added {
+.shop-list__item.added div {
   background-color: var(--green);
+  cursor: pointer;
 }
 
 .error {
