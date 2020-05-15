@@ -151,10 +151,11 @@ class App extends Component {
         newItem: {
           name: '',
           price: ''
-        }
+        },
+        itemExists: false
       });
     } else {
-      this.setState({itemExists: itemExists})
+      this.setState({itemExists: itemExists});
     }
   }
 
@@ -167,6 +168,7 @@ class App extends Component {
 
   render() {
     let tooExpensive = null;
+    let doubleItem = null;
 
     let shopList = 
       <ul className="shop-list">
@@ -194,6 +196,10 @@ class App extends Component {
         tooExpensive = <p className="error">You don't have enough money for: <span>{this.state.itemExpensive}</span></p>
       }
 
+      if(this.state.itemExists) {
+        doubleItem = <p className="error"><span>{this.state.itemExists.name}</span> is already on list.</p>
+      }
+
 
     return(
       <div className="App">
@@ -205,6 +211,7 @@ class App extends Component {
             click={this.saveNewItemHandler}
             prepareName={(event) => this.prepareNameHandler(event)}
             preparePrice={(event) => this.preparePriceHandler(event)}/>
+            {doubleItem}
         </div>
         <div className="container">
           ${this.state.wallet}
